@@ -4,4 +4,4 @@ RUN cd /app && npm install
 COPY ./utils/src/utils.js /app/src/utils.js
 WORKDIR /app
 EXPOSE 3000/tcp
-CMD node src/utils.js
+CMD DEBUG=express:* node src/utils.js

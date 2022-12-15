@@ -39,3 +39,16 @@ class User(_BaseUser):
 
 class CreateUser(_BaseUser):
     pass
+
+class AuthenticateUser(_pydantic.BaseModel):
+    signed_nonce: str
+    public_address: str
+
+class UserDetails(_pydantic.BaseModel):
+    first_name: str
+    last_name: str
+    id_type: int
+    id_number: str
+    email: str
+    phone_number: str
+    wallet_address: str

@@ -8,27 +8,30 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const checkSignature = (req, res) => {
-    const { nonce,signature, publicAddress } = req.body;
-    if (!signature || !publicAddress)
-      return res
-        .status(400)
-        .send({ error: 'Request should have signature and publicAddress' });
-        const msg = nonce;
-        const msgBufferHex = ethUtil.bufferToHex(Buffer.from(msg, 'utf8'));
-        const address = sigUtil.recoverPersonalSignature({
-          data: msgBufferHex,
-          sig: signature
-        });
-        if (address.toLowerCase() === publicAddress.toLowerCase()) {
-          return {address:address.toLowerCase()};
-        } else {
-          return res
-            .status(401)
-            .send({ error: 'Signature verification failed' });
-        }
+  console.log(req.body)
+  const { nonce, signature, publicAddress } = req.body;
+  if (!signature || !publicAddress)
+    return res
+      .status(400)
+      .send({ error: 'Request should have signature and publicAddress' });
+  const msg ="nonce:"+nonce.toString();
+  const msgBufferHex = ethUtil.bufferToHex(Buffer.from(msg, 'utf8'));
+  const address = sigUtil.recoverPersonalSignature({
+    data: msgBufferHex,
+    sig: signature
+  });
+  if (address.toLowerCase() === publicAddress.toLowerCase()) {
+    return res
+      .status(200)
+      .send({address: address.toLowerCase() })
+  } else {
+    return res
+      .status(401)
+      .send({ error: 'Signature verification failed' });
+  }
 }
-app.post('/api/signature',checkSignature)
+app.post('/api/signature', checkSignature)
 const port = 3000
 app.listen(port, () => {
-    console.log(`Signature Check listening on port ${port}`)
-  })
+  console.log(`Signature Check listening on port ${port}`)
+})

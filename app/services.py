@@ -45,16 +45,45 @@ async def create_user(
     return _schemas.User.from_orm(new_user)
 
 async def login_user(wallet_address:str, signed_nonce: str, db: "Session") -> str:
-    nonce = get_nonce(wallet_address, db=db)
-    result = requests.post(os.environ['UTILS_HOST']+":3000/api/signature",{"nonce":nonce,"public_address":wallet_address,"signature":signed_nonce}).json()
-    if("address" in result and  result["address"]==wallet_address):
+    nonce = await get_nonce(wallet_address, db=db)
+    result = requests.post("http://"+os.environ['UTILS_HOST']+":3000/api/signature",json={"nonce":nonce,"publicAddress":wallet_address,"signature":signed_nonce}).json()
+    print(result)
+    print(nonce)
+    if("address" in result and  result["address"]==wallet_address.lower()):
         new_nonce = math.floor(random.random()*100000000)
         db.query(_models.User).filter(_models.User.wallet_address == wallet_address). \
             update({_models.User.nonce:new_nonce}, synchronize_session = False)
+        db.commit()
         #might need to add id here later
-        return {"access_token": jwt.encode({"wallet_address":wallet_address,"created":datetime.now()}, "secret-key", algorithm="HS256")}
+        return {"access_token": jwt.encode({"wallet_address":wallet_address,"created":datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}, "secret-key", algorithm="HS256")}
     else:
         return {"error": "Failed to authenticate"}
+
+async def update_user(user_details: _schemas.UserDetails, db:"Session") -> str:
+    user = db.query(_models.User).filter(_models.User.wallet_address == user_details.wallet_address).first()
+    user.first_name = user_details.first_name
+    user.last_name = user_details.last_name
+    user.id_type = user_details.id_type
+    user.id_number = user_details.id_number
+    user.email = user_details.email
+    user.phone_number = user_details.phone_number
+    user.is_verified = True
+    db.commit()
+    db.refresh(user)
+    return{"updated":True}
+
+
+async def get_status(
+    wallet_address: str, db: "Session"
+) -> str:
+    result = db.query(_models.User). \
+        filter(_models.User.wallet_address == wallet_address). \
+        one_or_none() 
+    print(result)
+    if result is not None:
+         return {"verified":result.is_verified}
+    else:
+        return {"verified":False}
 
 async def get_nonce(
     wallet_address: str, db: "Session"

@@ -27,6 +27,16 @@ async def get_nonce(public_address: str,
     return await _services.get_nonce(wallet_address=public_address, db=db)
 
 @app.post('/api/authenticate')
-async def auth(public_address: str, signed_nonce: str,
+async def auth(auth : _schemas.AuthenticateUser,
     db: _orm.Session = _fastapi.Depends(_services.get_db)):
-    return await _services.login_user(wallet_address=public_address, signed_nonce=signed_nonce, db=db)
+    return await _services.login_user(wallet_address=auth.public_address, signed_nonce=auth.signed_nonce, db=db)
+
+@app.post('/api/update_details')
+async def update_user(user_details : _schemas.UserDetails,
+    db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.update_user(user_details, db=db)
+
+@app.get('/api/get_status')
+async def get_status(public_address: str,
+    db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.update_user(public_address, db=db)
