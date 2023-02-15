@@ -44,6 +44,11 @@ class AuthenticateUser(_pydantic.BaseModel):
     signed_nonce: str
     public_address: str
 
+class AuthenticateAadhar(_pydantic.BaseModel):
+    signed_nonce: str
+    aadharno: str
+    public_address: str
+
 class UserDetails(_pydantic.BaseModel):
     first_name: str
     last_name: str
@@ -52,3 +57,15 @@ class UserDetails(_pydantic.BaseModel):
     email: str
     phone_number: str
     wallet_address: str
+
+class AadharUser(_pydantic.BaseModel):
+    pass
+
+class PropertyOwnership(_pydantic.BaseModel):
+    pass
+
+class WalletAadharConnection(_pydantic.BaseModel):
+    pass
+
+class PropertyListing(_pydantic.BaseModel):
+    pass

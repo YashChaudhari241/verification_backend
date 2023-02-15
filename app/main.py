@@ -40,3 +40,19 @@ async def update_user(user_details : _schemas.UserDetails,
 async def get_status(public_address: str,
     db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.update_user(public_address, db=db)
+
+@app.post('/api/get_otp')
+async def get_status(aadharno: str,
+    response: _fastapi.Response, db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    result = await _services.get_otp(aadharno, db=db)
+    if result.error: 
+        # response.status_code = _fastapi.status.HTTP_400_BAD_REQUEST
+        return {"error":"Invalid Details"}
+        raise _fastapi.HTTPException(status_code=404, detail="Invalid Details")
+    else:
+        return result
+
+@app.post('/authenticate_user')
+async def auth_user(auth : _schemas.AuthenticateAadhar,
+    db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.login_user(wallet_address=auth.public_address, signed_nonce=auth.signed_nonce,aadharno= auth.aadharno, db=db)
