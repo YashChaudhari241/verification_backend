@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, List
 import fastapi as _fastapi
 import sqlalchemy.orm as _orm
-
+from fastapi.middleware.cors import CORSMiddleware
 import schemas as _schemas
 import services as _services
 
@@ -9,7 +9,16 @@ if TYPE_CHECKING:
     from sqlalchemy.orm import Session
 
 app = _fastapi.FastAPI()
-
+origins=[
+    "http://localhost:3000"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True, 
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.post("/api/apply/", response_model=_schemas.Property)
 async def create_contact(
     property: _schemas.CreateProperty,
