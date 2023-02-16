@@ -30,6 +30,10 @@ async def create_contact(
 async def get_contacts(db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.get_all_properties(db=db)
 
+@app.get('/api/get_all_listings', response_model=List[_schemas.Listing])
+async def get_listings(db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.get_all_listings(db=db)
+
 @app.get('/api/get_nonce', response_model=int)
 async def get_nonce(public_address: str,
     db: _orm.Session = _fastapi.Depends(_services.get_db)):
@@ -70,3 +74,8 @@ async def auth_user(auth : _schemas.AuthenticateAadhar,
 async def auth_user(wallet_address:str,
     db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.is_connected(wallet_address=wallet_address, db=db)
+
+@app.post('/api/create_listing')
+async def create_listing(listing_details: _schemas.Listing,
+db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.create_listing(listing_details,db=db)

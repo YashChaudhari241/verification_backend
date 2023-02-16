@@ -49,6 +49,10 @@ async def get_all_properties(db: "Session") -> List[_schemas.Property]:
     properties = db.query(_models.Property).all()
     return list(map(_schemas.Property.from_orm, properties))
 
+async def get_all_listings(db: "Session") -> List[_schemas.Listing]:
+    listings=db.query(_models.Listings).all()
+    return list(map(_schemas.Listing.from_orm, listings))
+
 async def create_user(
     new_user: _schemas.CreateUser, db: "Session"
 ) -> _schemas.User:
@@ -57,6 +61,15 @@ async def create_user(
     db.commit()
     db.refresh(new_user)
     return _schemas.User.from_orm(new_user)
+
+async def create_listing(
+    new_listing: _schemas.CreateListing, db:"Session"
+)-> _schemas.Listing:
+    new_listing = _models.Listings(**new_listing.dict())
+    db.add(new_listing)
+    db.commit()
+    db.refresh(new_listing)
+    return _schemas.Listing.from_orm(new_listing)
 
 async def login_user(wallet_address:str, signed_nonce: str, db: "Session") -> str:
     nonce = await get_nonce(wallet_address, db=db)

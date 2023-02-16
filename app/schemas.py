@@ -7,12 +7,26 @@ class _BaseProperty(_pydantic.BaseModel):
     user_id: int
     property_address: str
     property_docs: str
-
+class _BaseListing(_pydantic.BaseModel):
+    pass
 class Property(_BaseProperty):
     id: int
     is_verified: bool
     unique_str: str
     date_created: _dt.datetime
+    class Config:
+        orm_mode = True
+
+class Listing(_BaseListing):
+    property_id: str
+    deposit: int
+    is_rent_eth: bool
+    eth_rent: float
+    rs_rent: float
+    metadata_id: str
+    latitude: float
+    longitude: float
+    details: str
     class Config:
         orm_mode = True
 
@@ -38,6 +52,9 @@ class User(_BaseUser):
         orm_mode = True
 
 class CreateUser(_BaseUser):
+    pass
+
+class CreateListing(_BaseListing):
     pass
 
 class AuthenticateUser(_pydantic.BaseModel):
