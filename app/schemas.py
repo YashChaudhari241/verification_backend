@@ -69,3 +69,6 @@ class WalletAadharConnection(_pydantic.BaseModel):
 
 class PropertyListing(_pydantic.BaseModel):
     pass
+
+class JustAadhar(_pydantic.BaseModel):
+    aadharno: str

@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 app = _fastapi.FastAPI()
 origins=[
-    "http://localhost:3000"
+    "*"
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -50,18 +50,23 @@ async def get_status(public_address: str,
     db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.update_user(public_address, db=db)
 
-@app.post('/api/get_otp')
-async def get_status(aadharno: str,
+@app.post('/api/get_otp', response_model=dict)
+async def get_status(aadharBody: _schemas.JustAadhar,
     response: _fastapi.Response, db: _orm.Session = _fastapi.Depends(_services.get_db)):
-    result = await _services.get_otp(aadharno, db=db)
-    if result.error: 
+    result = await _services.get_otp(aadharBody.aadharno, db=db)
+    if "error" in result: 
         # response.status_code = _fastapi.status.HTTP_400_BAD_REQUEST
         return {"error":"Invalid Details"}
         raise _fastapi.HTTPException(status_code=404, detail="Invalid Details")
     else:
         return result
 
-@app.post('/authenticate_user')
+@app.post('/api/authenticate_user')
 async def auth_user(auth : _schemas.AuthenticateAadhar,
     db: _orm.Session = _fastapi.Depends(_services.get_db)):
-    return await _services.login_user(wallet_address=auth.public_address, signed_nonce=auth.signed_nonce,aadharno= auth.aadharno, db=db)
+    return await _services.connect_aadhar(wallet_address=auth.public_address, signed_nonce=auth.signed_nonce,aadharno= auth.aadharno, db=db)
+
+@app.get('/api/is_connnected')
+async def auth_user(wallet_address:str,
+    db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.is_connected(wallet_address=wallet_address, db=db)

@@ -32,13 +32,15 @@ CREATE TABLE IF NOT EXISTS aadhar(
 "Address" VARCHAR(255) ,
 "Pincode" VARCHAR(10),
 "PhoneNumber" VARCHAR(12) NOT NULL,
-"EmailID" VARCHAR(50));
+"EmailID" VARCHAR(50),
+"otp" VARCHAR(6)
+);
 
-insert into aadhar  values ('935078894568', 'Amar', 'Singh', '9/11/1989','Male' ,'A-203,BK Marg, Kanjur Marg (E)', '400092', '1259981299','asingh@gmail.com');
-insert into aadhar values ('563013996155', 'Bilas', 'Trivedi', '19/01/1992','Male', 'B-203,CK Marg, Ghatkopar (E)', '400094', '9981299901', 'btrivedi@gmail.com');
-insert into aadhar values ('419510692642', 'Ram', 'Gupta', '19/04/1982','Male', 'C-403,MD Marg, Chembur (E)', '400095', '9983299901', 'rgupta@gmail.com');
-insert into aadhar values ('707976695869', 'Riya', 'Takaria', '29/09/1998','Female', 'C-307,HP Marg, Bhandup (E)', '400099', '9983299801', 'rtakaria@gmail.com');
-insert into aadhar values ('688924056676', 'Samar', 'Khan', '22/09/1992','Male', 'A-107,RC Marg, Mumbra (E)', '400013', '9983899801', 'skhan@gmail.com');
+insert into aadhar  values ('935078894568', 'Amar', 'Singh', '9/11/1989','Male' ,'A-203,BK Marg, Kanjur Marg (E)', '400092', '1259981299','asingh@gmail.com',null);
+insert into aadhar values ('563013996155', 'Bilas', 'Trivedi', '19/01/1992','Male', 'B-203,CK Marg, Ghatkopar (E)', '400094', '9981299901', 'btrivedi@gmail.com',null);
+insert into aadhar values ('419510692642', 'Ram', 'Gupta', '19/04/1982','Male', 'C-403,MD Marg, Chembur (E)', '400095', '9983299901', 'rgupta@gmail.com',null);
+insert into aadhar values ('707976695869', 'Riya', 'Takaria', '29/09/1998','Female', 'C-307,HP Marg, Bhandup (E)', '400099', '9983299801', 'rtakaria@gmail.com',null);
+insert into aadhar values ('688924056676', 'Samar', 'Khan', '22/09/1992','Male', 'A-107,RC Marg, Mumbra (E)', '400013', '9983899801', 'skhan@gmail.com',null);
 
 -- insert into aadhar (UID, FirstName, LastName, EmailID, Gender, DOB, Address, State, Pincode, PhoneNumber) values (935078894568, 'Amar', 'Singh', 'asingh@gmail.com', 'Male', '9/11/1989', 'A-203,BK Marg, Kanjur Marg (E)', 'Maharashtra', 400092, 1259981299);
 -- insert into aadhar (UID, FirstName, LastName, EmailID, Gender, DOB, Address, State, Pincode, PhoneNumber) values (563013996155, 'Bilas', 'Trivedi', 'btrivedi@gmail.com', 'Male', '19/01/1992', 'B-203,CK Marg, Ghatkopar (E)', 'Maharashtra', 400094, 9981299901);

@@ -141,12 +141,12 @@ async def check_otp(
         return {"otp":result.otp}
 
 async def connect_aadhar(wallet_address:str, signed_nonce: str, aadharno: str, db: "Session") -> str:
-    otp = await get_otp(aadharno, db=db)
-    if error in otp:
+    otp = await check_otp(aadharno, db=db)
+    if "error" in otp:
         return otp
-    result = requests.post("http://"+os.environ['UTILS_HOST']+":3000/api/signature",json={"nonce":otp.otp,"publicAddress":wallet_address,"signature":signed_nonce}).json()
+    result = requests.post("http://"+os.environ['UTILS_HOST']+":3000/api/signature",json={"nonce":otp["otp"],"publicAddress":wallet_address,"signature":signed_nonce}).json()
     print(result)
-    print(otp.otp)
+    print(otp["otp"])
     if("address" in result and  result["address"]==wallet_address.lower()):
         # new_nonce = math.floor(random.random()*100000000)
         # db.query(_models.User).filter(_models.User.wallet_address == wallet_address). \
@@ -156,3 +156,13 @@ async def connect_aadhar(wallet_address:str, signed_nonce: str, aadharno: str, d
         return {"access_token": jwt.encode({"wallet_address":wallet_address,"created":datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}, "secret-key", algorithm="HS256")}
     else:
         return {"error": ErrorCodes.INVALID_SIGNATURE_OR_OTP}
+
+async def is_connected(wallet_address:str, db: "Session") -> dict:
+    result = db.query(_models.AadharConnect). \
+        filter(_models.AadharConnect.wallet_address == wallet_address). \
+        one_or_none()
+    if result is None:
+        return {"found":False}
+    else:
+        result = result.join(_models.AadharUser).filter(AadharUser.UID == AadharConnect.UID).one_or_none()
+        return {"found":True,"endsWith":result.UID[:-2],"firstName":result.FirstName,"lastName":result.LastName,"email":result.EmailID,"PhoneNumber":result.PhoneNumber}

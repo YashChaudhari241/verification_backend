@@ -45,6 +45,7 @@ class AadharUser(_database.Base):
     Pincode = _sql.Column(_sql.String)
     PhoneNumber = _sql.Column(_sql.String)
     EmailID = _sql.Column(_sql.String)
+    otp = _sql.Column(_sql.String)
     wallet_address = relationship('AadharConnect', backref="wallet_owner")
     properties = relationship('PropertyOwnership', backref="owner")
     def __repr__(self):
