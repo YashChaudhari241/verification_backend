@@ -70,7 +70,7 @@ async def auth_user(auth : _schemas.AuthenticateAadhar,
     db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.login_user(wallet_address=auth.public_address, signed_nonce=auth.signed_nonce,aadharno= auth.aadharno, db=db)
 
-# @app.post('/create_listing')
-# async def create_listing(listing_details: _schemas.Listing,
-# db: _orm.Session = _fastapi.Depends(_services.get_db)):
-#     return await _services.create_listing(listing_details,db=db)
+@app.post('/api/create_listing')
+async def create_listing(listing_details: _schemas.Listing,
+db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.create_listing(listing_details,db=db)

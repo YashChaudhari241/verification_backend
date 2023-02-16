@@ -54,8 +54,8 @@ class User(_BaseUser):
 class CreateUser(_BaseUser):
     pass
 
-# class CreateListing(_BaseProperty):
-#     pass
+class CreateListing(_BaseListing):
+    pass
 
 class AuthenticateUser(_pydantic.BaseModel):
     signed_nonce: str
