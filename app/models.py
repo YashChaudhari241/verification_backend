@@ -70,7 +70,7 @@ class AadharConnect(_database.Base):
     __tablename__ = "aadhar_wallet"
     UID = _sql.Column(_sql.String,_sql.ForeignKey('aadhar.UID'),
         primary_key=True)
-    wallet_address = _sql.Column(_sql.String, nullable=False) 
+    wallet_address = _sql.Column(_sql.String, nullable=False)
     def __repr__(self):
         return f"AadharConnect({self.UID!r}, {self.wallet_address!r})"
 
@@ -78,10 +78,13 @@ class Listings(_database.Base):
     __tablename__ = "listings"
     property_id = _sql.Column(_sql.String,_sql.ForeignKey('property.SaleDeedNumber'), primary_key=True)
     deposit = _sql.Column(_sql.Integer)
-    is_rent_eth = _sql.Column(_sql.Boolean)
-    rs_rent = _sql.Column(_sql.DECIMAL(11,2))
     eth_rent = _sql.Column(_sql.DECIMAL(22,18))
     metadata_id  = _sql.Column(_sql.String)
     latitude = _sql.Column(_sql.Numeric)
     longitude = _sql.Column(_sql.Numeric)
-    details = _sql.Column(_sql.String) 
+    details = _sql.Column(_sql.String)
+
+class WalletNonce(_database.Base):
+    __tablename__="wallet_nonce"
+    wallet_address = _sql.Column(_sql.String, primary_key=True)
+    nonce = _sql.Column(_sql.String)

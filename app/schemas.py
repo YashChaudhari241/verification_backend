@@ -20,9 +20,7 @@ class Property(_BaseProperty):
 class Listing(_BaseListing):
     property_id: str
     deposit: int
-    is_rent_eth: bool
     eth_rent: float
-    rs_rent: float
     metadata_id: str
     latitude: float
     longitude: float
@@ -89,3 +87,6 @@ class PropertyListing(_pydantic.BaseModel):
 
 class JustAadhar(_pydantic.BaseModel):
     aadharno: str
+
+class JustWallet(_pydantic.BaseModel):
+    wallet_address:str

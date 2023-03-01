@@ -74,12 +74,10 @@ async def create_listing(
 async def login_user(wallet_address:str, signed_nonce: str, db: "Session") -> str:
     nonce = await get_nonce(wallet_address, db=db)
     result = requests.post("http://"+os.environ['UTILS_HOST']+":3000/api/signature",json={"nonce":nonce,"publicAddress":wallet_address,"signature":signed_nonce}).json()
-    print(result)
-    print(nonce)
     if("address" in result and  result["address"]==wallet_address.lower()):
-        new_nonce = math.floor(random.random()*100000000)
-        db.query(_models.User).filter(_models.User.wallet_address == wallet_address). \
-            update({_models.User.nonce:new_nonce}, synchronize_session = False)
+        new_nonce = generate(size=8)
+        db.query(_models.WalletNonce).filter(_models.WalletNonce.wallet_address == wallet_address). \
+            update({_models.WalletNonce.nonce:new_nonce}, synchronize_session = False)
         db.commit()
         #might need to add id here later
         return {"access_token": jwt.encode({"wallet_address":wallet_address,"created":datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}, "secret-key", algorithm="HS256")}
@@ -114,17 +112,16 @@ async def get_status(
 
 async def get_nonce(
     wallet_address: str, db: "Session"
-) -> int:
-    result = db.query(_models.User). \
-        filter(_models.User.wallet_address == wallet_address). \
-        one_or_none() 
-    print(result)  
+) -> str:
+    result = db.query(_models.WalletNonce). \
+        filter(_models.WalletNonce.wallet_address == wallet_address). \
+        one_or_none()
     if result is None:
-          new_user = _models.User(wallet_address=wallet_address,nonce=math.floor(random.random()*100000000),unique_str=generate(size=8))
-          db.add(new_user)
+          new_entry = _models.WalletNonce(wallet_address=wallet_address,nonce=generate(size=8))
+          db.add(new_entry)
           db.commit()
-          db.refresh(new_user)
-          return new_user.nonce
+          db.refresh(new_entry)
+          return new_entry.nonce
     return result.nonce
 
 
@@ -166,6 +163,13 @@ async def connect_aadhar(wallet_address:str, signed_nonce: str, aadharno: str, d
         #     update({_models.User.nonce:new_nonce}, synchronize_session = False)
         # db.commit()
         # #might need to add id here later
+        result = db.query(_models.AadharConnect). \
+        filter(_models.AadharConnect.wallet_address == wallet_address). \
+        one_or_none()
+        if result is None:
+            conn_obj = _models.AadharConnect(wallet_address=wallet_address,UID=aadharno)
+            db.add(conn_obj)
+            db.commit()
         return {"access_token": jwt.encode({"wallet_address":wallet_address,"created":datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}, "secret-key", algorithm="HS256")}
     else:
         return {"error": ErrorCodes.INVALID_SIGNATURE_OR_OTP}
@@ -177,5 +181,19 @@ async def is_connected(wallet_address:str, db: "Session") -> dict:
     if result is None:
         return {"found":False}
     else:
-        result = result.join(_models.AadharUser).filter(AadharUser.UID == AadharConnect.UID).one_or_none()
-        return {"found":True,"endsWith":result.UID[:-2],"firstName":result.FirstName,"lastName":result.LastName,"email":result.EmailID,"PhoneNumber":result.PhoneNumber}
+        result = db.query(_models.AadharUser).join(
+        _models.AadharConnect, _models.AadharUser.UID == _models.AadharConnect.UID
+        ).filter(_models.AadharConnect.wallet_address == wallet_address). \
+        one_or_none()
+        return {"found":True,"endsWith":result.UID[-4:],"firstName":result.FirstName,"lastName":result.LastName,"email":result.EmailID,"PhoneNumber":result.PhoneNumber}
+
+
+async def disconnect(wallet_address:str, db: "Session") -> dict:
+    result = db.query(_models.AadharConnect). \
+        filter(_models.AadharConnect.wallet_address == wallet_address).delete()
+    db.commit()
+    print(result)
+    if result is None:
+        return {"found":False}
+    else: 
+        return {"found":True}

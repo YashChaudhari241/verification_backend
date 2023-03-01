@@ -73,13 +73,16 @@ CREATE TABLE IF NOT EXISTS aadhar_wallet(
     "wallet_address" VARCHAR(66)
 );
 
+CREATE TABLE IF NOT EXISTS wallet_nonce(
+    "wallet_address" VARCHAR(66),
+    "nonce" VARCHAR(8)
+);
+
 CREATE TABLE IF NOT EXISTS listings(
     "property_id" VARCHAR(16) PRIMARY KEY REFERENCES PROPERTY("SaleDeedNumber"), 
     "deposit" INT,   
-    "is_rent_eth" BOOLEAN NOT NULL,
     "eth_rent" DECIMAL(22,18),
-    "rs_rent" DECIMAL(11,2),
-    "metadata_id"  VARCHAR(8),
+    "metadata_id"  VARCHAR(8) UNIQUE,
     "latitude" NUMERIC,
     "longitude" NUMERIC,
     "details" VARCHAR(256)

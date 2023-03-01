@@ -34,7 +34,7 @@ async def get_contacts(db: _orm.Session = _fastapi.Depends(_services.get_db)):
 async def get_listings(db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.get_all_listings(db=db)
 
-@app.get('/api/get_nonce', response_model=int)
+@app.get('/api/get_nonce', response_model=str)
 async def get_nonce(public_address: str,
     db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.get_nonce(wallet_address=public_address, db=db)
@@ -55,7 +55,7 @@ async def get_status(public_address: str,
     return await _services.update_user(public_address, db=db)
 
 @app.post('/api/get_otp', response_model=dict)
-async def get_status(aadharBody: _schemas.JustAadhar,
+async def get_otp(aadharBody: _schemas.JustAadhar,
     response: _fastapi.Response, db: _orm.Session = _fastapi.Depends(_services.get_db)):
     result = await _services.get_otp(aadharBody.aadharno, db=db)
     if "error" in result: 
@@ -71,11 +71,18 @@ async def auth_user(auth : _schemas.AuthenticateAadhar,
     return await _services.connect_aadhar(wallet_address=auth.public_address, signed_nonce=auth.signed_nonce,aadharno= auth.aadharno, db=db)
 
 @app.get('/api/is_connnected')
-async def auth_user(wallet_address:str,
+async def is_conn(wallet_address:str,
     db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.is_connected(wallet_address=wallet_address, db=db)
 
 @app.post('/api/create_listing')
-async def create_listing(listing_details: _schemas.Listing,
+async def create_listing(listing_details: _schemas.Listing,uploaded_files: List[_fastapi.UploadFile],
 db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    print([file.filename for file in uploaded_files])
     return await _services.create_listing(listing_details,db=db)
+
+@app.post('/api/disconnect_aadhar')
+async def disconnect(address:_schemas.JustWallet,
+db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.disconnect(wallet_address=address.wallet_address,db=db)
+
