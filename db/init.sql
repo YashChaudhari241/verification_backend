@@ -85,5 +85,10 @@ CREATE TABLE IF NOT EXISTS listings(
     "metadata_id"  VARCHAR(8) UNIQUE,
     "latitude" NUMERIC,
     "longitude" NUMERIC,
+    "isFurnished" BOOLEAN,
+    "hasParking" BOOLEAN,
+    "isPetFriendly" BOOLEAN,
+    "hasBalcony" BOOLEAN,
+    "hasGym" BOOLEAN,
     "details" VARCHAR(256)
 );
