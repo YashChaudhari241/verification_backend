@@ -53,7 +53,13 @@ class CreateUser(_BaseUser):
     pass
 
 class CreateListing(_BaseListing):
+    eth_rent: str
+    deposit: str
+    details:str
+    property_id:str
     pass
+    def __repr__(self):
+        return f"Listing_data({self.eth_rent!r}, {self.property_id!r},{self.details!r})"
 
 class AuthenticateUser(_pydantic.BaseModel):
     signed_nonce: str
@@ -84,6 +90,15 @@ class WalletAadharConnection(_pydantic.BaseModel):
 
 class PropertyListing(_pydantic.BaseModel):
     pass
+
+class UnlistProp(_pydantic.BaseModel):
+    wallet_address:str
+    property_id:str
+
+class UpdateListing(_pydantic.BaseModel):
+    wallet_address:str
+    property_id:str
+    index:int
 
 class JustAadhar(_pydantic.BaseModel):
     aadharno: str

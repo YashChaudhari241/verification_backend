@@ -85,5 +85,6 @@ CREATE TABLE IF NOT EXISTS listings(
     "metadata_id"  VARCHAR(8) UNIQUE,
     "latitude" NUMERIC,
     "longitude" NUMERIC,
-    "details" VARCHAR(256)
+    "details" VARCHAR(256),
+    "listing_index" INT
 );

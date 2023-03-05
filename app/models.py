@@ -61,10 +61,9 @@ class PropertyOwnership(_database.Base):
     Area= _sql.Column(_sql.String)
     Address= _sql.Column(_sql.String)
     Pincode= _sql.Column(_sql.String)
-    unique_str = _sql.Column(_sql.String)
     listing = relationship('Listings', backref="record")
     def __repr__(self):
-        return f"Property({self.SaleDeedNumber!r}, {self.unique_str!r}, {self.UID!r})"
+        return f"Property({self.SaleDeedNumber!r}, {self.UID!r})"
 
 class AadharConnect(_database.Base):
     __tablename__ = "aadhar_wallet"
@@ -77,12 +76,13 @@ class AadharConnect(_database.Base):
 class Listings(_database.Base):
     __tablename__ = "listings"
     property_id = _sql.Column(_sql.String,_sql.ForeignKey('property.SaleDeedNumber'), primary_key=True)
-    deposit = _sql.Column(_sql.Integer)
+    deposit = _sql.Column(_sql.DECIMAL(22,18))
     eth_rent = _sql.Column(_sql.DECIMAL(22,18))
     metadata_id  = _sql.Column(_sql.String)
     latitude = _sql.Column(_sql.Numeric)
     longitude = _sql.Column(_sql.Numeric)
     details = _sql.Column(_sql.String)
+    listing_index= _sql.Column(_sql.Integer)
 
 class WalletNonce(_database.Base):
     __tablename__="wallet_nonce"
