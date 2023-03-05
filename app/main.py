@@ -4,7 +4,7 @@ import sqlalchemy.orm as _orm
 from fastapi.middleware.cors import CORSMiddleware
 import schemas as _schemas
 import services as _services
-
+import listing_services as _listing_services
 if TYPE_CHECKING:
     from sqlalchemy.orm import Session
 
@@ -86,3 +86,7 @@ async def disconnect(address:_schemas.JustWallet,
 db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.disconnect(wallet_address=address.wallet_address,db=db)
 
+
+@app.post('/api/get_properties')
+async def get_properties(address:_schemas.JustWallet,db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _listing_services.get_properties(wallet_address=address.wallet_address,db=db)

@@ -197,3 +197,4 @@ async def disconnect(wallet_address:str, db: "Session") -> dict:
         return {"found":False}
     else: 
         return {"found":True}
+
