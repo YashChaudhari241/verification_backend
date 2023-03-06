@@ -37,3 +37,4 @@ watchgod>=0.7
 websockets>=10.0
 nanoid==2.0.0
 PyJWT==2.6.0
+aiofiles==23.1.0

@@ -25,6 +25,7 @@ class ErrorCodes(Enum):
     USER_NOT_FOUND=1
     OTP_NOT_FOUND=2
     INVALID_SIGNATURE_OR_OTP=3
+    LISTING_ALREADY_EXISTS=4
 
 def _add_tables():
     return _database.Base.metadata.create_all(bind=_database.engine)
@@ -63,13 +64,16 @@ async def create_user(
     return _schemas.User.from_orm(new_user)
 
 async def create_listing(
-    new_listing: _schemas.CreateListing, db:"Session"
+    new_listing: _models.Listings, db:"Session"
 )-> _schemas.Listing:
-    new_listing = _models.Listings(**new_listing.dict())
-    db.add(new_listing)
-    db.commit()
-    db.refresh(new_listing)
-    return _schemas.Listing.from_orm(new_listing)
+    result = db.query(_models.Listings).filter(_models.Listings.property_id == new_listing.property_id).one_or_none()
+    if result is None:
+        db.add(new_listing)
+        db.commit()
+        db.refresh(new_listing)
+        return _schemas.Listing.from_orm(new_listing)
+    else:
+        return {"error":ErrorCodes.LISTING_ALREADY_EXISTS}
 
 async def login_user(wallet_address:str, signed_nonce: str, db: "Session") -> str:
     nonce = await get_nonce(wallet_address, db=db)
