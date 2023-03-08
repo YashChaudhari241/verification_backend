@@ -8,6 +8,9 @@ import jwt
 import random
 import math
 from enum import Enum
+from email.message import EmailMessage
+import ssl
+import smtplib
 import requests
 from datetime import datetime
 if TYPE_CHECKING:
@@ -139,6 +142,20 @@ async def get_otp(
     result.otp  =  generate('1234567890',size=6)
     db.commit()
     db.refresh(result)
+    em_sender='rentodapp@gmail.com'
+    em_receiver=result.EmailID
+    password='rpeshqbyiwoazdob'
+    subject= 'Your OTP for Aadhar verification'
+    body=result.otp
+    em=EmailMessage();
+    em['From']=em_sender
+    em['To']=em_receiver
+    em['Subject']=subject
+    em.set_content(body)
+    context=ssl.create_default_context()
+    with smtplib.SMTP_SSL('smtp.gmail.com',465,context=context) as smtp:
+        smtp.login(em_sender,password)
+        smtp.sendmail(em_sender,em_receiver,em.as_string())
     return{"otp":result.otp}
     # print(result) 
 
