@@ -15,6 +15,7 @@ app = _fastapi.FastAPI()
 origins=[
     "*"
 ]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -108,7 +109,7 @@ async def get_properties(address:_schemas.JustWallet,db: _orm.Session = _fastapi
 
 @app.post('/api/get_listings')
 async def get_my_listings(address:_schemas.JustWallet,db: _orm.Session = _fastapi.Depends(_services.get_db)):
-    return await _listing_services.get_properties(wallet_address=address.wallet_address,db=db)
+    return await _listing_services.get_listings(wallet_address=address.wallet_address,db=db)
 
 @app.post('/api/unlist')
 async def unlist(data:_schemas.UnlistProp,

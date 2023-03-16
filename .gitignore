@@ -3,3 +3,4 @@ __pycache__
 .vscode
 .vscode-oss
 reset.sh
+/app/files
