@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS wallet_nonce(
 
 CREATE TABLE IF NOT EXISTS listings(
     "property_id" VARCHAR(16) PRIMARY KEY REFERENCES PROPERTY("SaleDeedNumber"), 
-    "deposit" INT,   
+    "deposit" DECIMAL(22,18),   
     "eth_rent" DECIMAL(22,18),
     "metadata_id"  VARCHAR(8) UNIQUE,
     "latitude" NUMERIC,
