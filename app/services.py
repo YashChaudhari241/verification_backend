@@ -57,9 +57,9 @@ def get_db():
 #     properties = db.query(Property).all()
 #     return list(map(_schemas.Property.from_orm, properties))
 
-# async def get_all_listings(db: "Session") -> List[_schemas.Listing]:
-#     listings=db.query(Listings).all()
-#     return list(map(_schemas.Listing.from_orm, listings))User
+async def get_all_listings(db: "Session") -> List[_schemas.Listing]:
+    listings=db.query(Listings).all()
+    return list(map(_schemas.Listing.from_orm, listings))
 
 # async def create_user(
 #     new_user: _schemas.CreateUser, db: "Session"

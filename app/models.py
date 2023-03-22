@@ -84,6 +84,17 @@ class Listings(_database.Base):
     bhk = Column(DECIMAL(3,1))
     bathrooms = Column(Integer)
     details = Column(String)
+    bhk:Column(Integer)
+    bathrooms: Column(Integer)
+    furnish_status: Column(String)
+    hasGym: Column(Boolean)
+    isPetFriendly: Column(Boolean)
+    hasPark: Column(Boolean)
+    hasParking: Column(Boolean)
+    hasPool: Column(Boolean)
+    hasBalcony: Column(Boolean)
+    hasCameras: Column(Boolean)
+    isSmartHome: Column(Boolean)
     listing_index= Column(Integer)
 
 class WalletNonce(_database.Base):

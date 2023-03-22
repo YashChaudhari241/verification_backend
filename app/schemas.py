@@ -25,6 +25,17 @@ class Listing(_BaseListing):
     latitude: float
     longitude: float
     details: str
+    bhk:int
+    bathrooms: int
+    furnish_status: str
+    hasGym: bool
+    isPetFriendly: bool
+    hasPark: bool
+    hasParking: bool
+    hasPool: bool
+    hasBalcony: bool
+    hasCameras: bool
+    isSmartHome: bool
     class Config:
         orm_mode = True
 
