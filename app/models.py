@@ -81,6 +81,8 @@ class Listings(_database.Base):
     metadata_id  = Column(String)
     latitude = Column(Numeric)
     longitude = Column(Numeric)
+    bhk = Column(DECIMAL(3,1))
+    bathrooms = Column(Integer)
     details = Column(String)
     listing_index= Column(Integer)
 

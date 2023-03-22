@@ -57,6 +57,10 @@ class CreateListing(_BaseListing):
     deposit: str
     details:str
     property_id:str
+    latitude:str
+    longitude:str
+    bhk:float
+    bathrooms:int
     pass
     def __repr__(self):
         return f"Listing_data({self.eth_rent!r}, {self.property_id!r},{self.details!r})"
