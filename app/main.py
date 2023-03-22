@@ -83,8 +83,13 @@ async def is_conn(wallet_address:str,
 async def create_listing(uploaded_files: List[_fastapi.UploadFile],
 deposit:str = _fastapi.Form(),eth_rent:str =_fastapi.Form(),
 property_id:str =_fastapi.Form(),details:str =_fastapi.Form(),
-longitude:str =_fastapi.Form(),
-latitude:str =_fastapi.Form(),
+longitude:str =_fastapi.Form(),latitude:str =_fastapi.Form(),
+bhk:str=_fastapi.Form(),bathrooms:int =_fastapi.Form(),
+furnish_status:str =_fastapi.Form(),hasGym:str =_fastapi.Form(),
+isPetFriendly:str =_fastapi.Form(),hasPark:str =_fastapi.Form(),
+hasParking:str =_fastapi.Form(),hasPool:str =_fastapi.Form(),
+hasBalcony:str =_fastapi.Form(),hasCameras:str =_fastapi.Form(),
+isSmartHome:str =_fastapi.Form(),
 db: _orm.Session = _fastapi.Depends(_services.get_db)):
     # print([file.filename for file in uploaded_files])
     unique_str = generate(size=8)
@@ -95,7 +100,9 @@ db: _orm.Session = _fastapi.Depends(_services.get_db)):
                 await out_file.write(content)
     return await _services.create_listing(new_listing=_models.Listings(property_id=property_id,
     deposit=float(deposit),eth_rent=float(eth_rent),metadata_id=unique_str,details=details,
-    longitude=float(longitude),latitude=float(latitude)),db=db)
+    longitude=float(longitude),latitude=float(latitude),bhk=int(bhk),bathrooms=int(bathrooms),furnish_status=furnish_status,
+    hasGym=hasGym,isPetFriendly=isPetFriendly,hasPark=hasPark,hasParking=hasParking,hasPool=hasPool,hasBalcony=hasBalcony,
+    hasCameras=hasCameras,isSmartHome=isSmartHome),db=db)
 
 @app.post('/api/disconnect_aadhar')
 async def disconnect(address:_schemas.JustWallet,

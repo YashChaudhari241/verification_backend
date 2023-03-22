@@ -86,5 +86,16 @@ CREATE TABLE IF NOT EXISTS listings(
     "latitude" NUMERIC,
     "longitude" NUMERIC,
     "details" VARCHAR(256),
+    "bhk" NUMERIC,
+    "bathrooms" NUMERIC,
+    "furnish_status" VARCHAR(20),
+    "hasGym" BOOLEAN,
+    "isPetFriendly" BOOLEAN,
+    "hasPark" BOOLEAN,
+    "hasParking" BOOLEAN,
+    "hasPool" BOOLEAN,
+    "hasBalcony" BOOLEAN,
+    "hasCameras" BOOLEAN,
+    "isSmartHome" BOOLEAN,
     "listing_index" INT
 );
