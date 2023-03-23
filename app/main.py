@@ -100,9 +100,9 @@ db: _orm.Session = _fastapi.Depends(_services.get_db)):
                 await out_file.write(content)
     return await _services.create_listing(new_listing=_models.Listings(property_id=property_id,
     deposit=float(deposit),eth_rent=float(eth_rent),metadata_id=unique_str,details=details,
-    longitude=float(longitude),latitude=float(latitude),bhk=int(bhk),bathrooms=int(bathrooms),furnish_status=furnish_status,
-    hasGym=hasGym,isPetFriendly=isPetFriendly,hasPark=hasPark,hasParking=hasParking,hasPool=hasPool,hasBalcony=hasBalcony,
-    hasCameras=hasCameras,isSmartHome=isSmartHome),db=db)
+    longitude=float(longitude),latitude=float(latitude),bhk=int(bhk),bathrooms=int(bathrooms),furnish_status=int(furnish_status),
+    hasGym=hasGym=="true",isPetFriendly=isPetFriendly=="true",hasPark=hasPark=="true",hasParking=hasParking=="true",hasPool=hasPool=="true",hasBalcony=hasBalcony=="true",
+    hasCameras=hasCameras=="true",isSmartHome=isSmartHome=="true"),db=db)
 
 @app.post('/api/disconnect_aadhar')
 async def disconnect(address:_schemas.JustWallet,

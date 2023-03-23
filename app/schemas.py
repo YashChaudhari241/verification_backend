@@ -19,7 +19,7 @@ class Property(_BaseProperty):
 
 class Listing(_BaseListing):
     property_id: str
-    deposit: int
+    deposit: float
     eth_rent: float
     metadata_id: str
     latitude: float
@@ -72,6 +72,15 @@ class CreateListing(_BaseListing):
     longitude:str
     bhk:float
     bathrooms:int
+    furnish_status: int
+    hasGym: bool
+    isPetFriendly: bool
+    hasPark: bool
+    hasParking: bool
+    hasPool: bool
+    hasBalcony: bool
+    hasCameras: bool
+    isSmartHome: bool
     pass
     def __repr__(self):
         return f"Listing_data({self.eth_rent!r}, {self.property_id!r},{self.details!r})"
