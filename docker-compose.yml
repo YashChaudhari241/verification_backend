@@ -34,6 +34,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_NAME: housing_db
+      WORKERS_PER_CORE: 0.25
     links:
       - db
     volumes:

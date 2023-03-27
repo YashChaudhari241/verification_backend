@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime, N
 from sqlalchemy.orm import relationship
 import database as _database
 
-# #OLD 
+# #OLD
 # class Property(_database.Base):
 #     __tablename__ = "properties"
 #     id = Column(Integer, primary_key=True, index=True)
@@ -34,13 +34,14 @@ import database as _database
 #     def __repr__(self):
 #         return f"User({self.id!r}, {self.wallet_address!r},{self.nonce!r})"
 
+
 class AadharUser(_database.Base):
     __tablename__ = "aadhar"
-    UID = Column(String , primary_key=True,index=True)
-    FirstName = Column(String,index=True, nullable=False)
-    LastName = Column(String,index=True, nullable = False)
+    UID = Column(String, primary_key=True, index=True)
+    FirstName = Column(String, index=True, nullable=False)
+    LastName = Column(String, index=True, nullable=False)
     DOB = Column(String, nullable=False)
-    Gender = Column(String, nullable= False)
+    Gender = Column(String, nullable=False)
     Address = Column(String)
     Pincode = Column(String)
     PhoneNumber = Column(String)
@@ -48,54 +49,65 @@ class AadharUser(_database.Base):
     otp = Column(String)
     wallet_address = relationship('AadharConnect', backref="wallet_owner")
     properties = relationship('PropertyOwnership', backref="owner")
+
     def __repr__(self):
         return f"AadharUser({self.UID!r}, {self.FirstName!r},{self.LastName!r})"
 
-#Latest
+# Latest
+
+
 class PropertyOwnership(_database.Base):
     __tablename__ = "property"
     SaleDeedNumber = Column(String, primary_key=True)
     MahaRERANumber = Column(String)
-    UID = Column(String,ForeignKey('aadhar.UID'),
-        nullable=False)
-    Area= Column(String)
-    Address= Column(String)
-    Pincode= Column(String)
+    UID = Column(String, ForeignKey('aadhar.UID'),
+                 nullable=False)
+    Area = Column(String)
+    City = Column(String)
+    State = Column(String)
+    Address = Column(String)
+    Pincode = Column(String)
     listing = relationship('Listings', backref="record")
+
     def __repr__(self):
         return f"Property({self.SaleDeedNumber!r}, {self.UID!r})"
 
+
 class AadharConnect(_database.Base):
     __tablename__ = "aadhar_wallet"
-    UID = Column(String,ForeignKey('aadhar.UID'),
-        primary_key=True)
+    UID = Column(String, ForeignKey('aadhar.UID'),
+                 primary_key=True)
     wallet_address = Column(String, nullable=False)
+
     def __repr__(self):
         return f"AadharConnect({self.UID!r}, {self.wallet_address!r})"
 
+
 class Listings(_database.Base):
     __tablename__ = "listings"
-    property_id = Column(String,ForeignKey('property.SaleDeedNumber'), primary_key=True)
-    deposit = Column(DECIMAL(22,18))
-    eth_rent = Column(DECIMAL(22,18))
-    metadata_id  = Column(String)
+    property_id = Column(String, ForeignKey(
+        'property.SaleDeedNumber'), primary_key=True)
+    deposit = Column(DECIMAL(22, 18))
+    eth_rent = Column(DECIMAL(22, 18))
+    metadata_id = Column(String)
     latitude = Column(Numeric)
     longitude = Column(Numeric)
-    bhk = Column(DECIMAL(3,1))
+    bhk = Column(DECIMAL(3, 1))
     bathrooms = Column(Integer)
     details = Column(String)
-    furnish_status= Column(Integer)
-    hasGym= Column(Boolean, default=False, server_default="false")
-    isPetFriendly= Column(Boolean, default=False, server_default="false")
-    hasPark= Column(Boolean)
-    hasParking= Column(Boolean, default=False, server_default="false")
-    hasPool= Column(Boolean)
-    hasBalcony= Column(Boolean, default=False, server_default="false")
-    hasCameras= Column(Boolean, default=False, server_default="false")
-    isSmartHome= Column(Boolean, default=False, server_default="false")
-    listing_index= Column(Integer)
+    furnish_status = Column(Integer)
+    hasGym = Column(Boolean, default=False, server_default="false")
+    isPetFriendly = Column(Boolean, default=False, server_default="false")
+    hasPark = Column(Boolean)
+    hasParking = Column(Boolean, default=False, server_default="false")
+    hasPool = Column(Boolean)
+    hasBalcony = Column(Boolean, default=False, server_default="false")
+    hasCameras = Column(Boolean, default=False, server_default="false")
+    isSmartHome = Column(Boolean, default=False, server_default="false")
+    listing_index = Column(Integer)
+
 
 class WalletNonce(_database.Base):
-    __tablename__="wallet_nonce"
+    __tablename__ = "wallet_nonce"
     wallet_address = Column(String, primary_key=True)
     nonce = Column(String)
