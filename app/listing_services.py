@@ -79,3 +79,10 @@ async def search_listing(query: SearchQuery, db: "Session"):
     stmt = select(Listings, PropertyOwnership).join(PropertyOwnership)
     listings = build_query(base_stmt=stmt, query=query, db=db)
     return listings
+
+
+async def get_listing(metadata: str, db):
+    stmt = select(Listings, PropertyOwnership).join(
+        PropertyOwnership).where(Listings.metadata_id == metadata)
+    listing = db.execute(stmt).fetchone()
+    return listing

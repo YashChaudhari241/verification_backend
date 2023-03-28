@@ -153,3 +153,8 @@ async def autocomplete(data: _schemas.AutoCompleteQuery):
 @app.post('/api/search')
 async def autocomplete(data: _schemas.SearchQuery, db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _listing_services.search_listing(query=data, db=db)
+
+
+@app.get('/api/listing')
+async def getListing(metadata: str, db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _listing_services.get_listing(metadata=metadata, db=db)
