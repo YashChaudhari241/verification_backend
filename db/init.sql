@@ -58,11 +58,12 @@ CREATE TABLE IF NOT EXISTS property(
 "Address" VARCHAR(255),
 "Pincode" VARCHAR(10)
 );
-insert into Property Values('1394/2015/SRO1','PL1238048425','935078894568','550 sqft','Mumbai','Maharashtra','A-204,BK Marg, Kanjur Marg (E)','40092');
-insert into Property Values('2414/2019/SRO3','PL3928048425','419510692642','750 sqft','Mumbai','Maharashtra','C-402,MD Marg, Chembur (E)','40095');
-insert into Property Values('1840/2003/SRO2','PL4428048445','707976695869','620 sqft','Mumbai','Maharashtra','C-407,HP Marg, Bhandup (E)','40099');
-insert into Property Values('2941/2011/SRO3','PL5280468445','688924056676','620 sqft','Mumbai','Maharashtra','A-102,RC Marg, Mumbra (E)','40013');
-insert into Property Values('3941/2010/SRO5','PL7280268447','563013996155','420 sqft','Mumbai','Maharashtra','B-203,CK Marg, Ghatkopar (E))','40094');
+insert into Property Values('1394/2015/SRO1','PL1238048425','935078894568','550 sqft','Mumbai','Maharashtra','A-204,BK Marg, Kanjur Marg (E)','400092');
+insert into Property Values('1395/2015/SRO3','PL1238042425','935078894568','450 sqft','Ahmedabad','Gujarat','A-205 ATV Road, Ahmedabad ','300032');
+insert into Property Values('2414/2019/SRO3','PL3928048425','419510692642','750 sqft','Mumbai','Maharashtra','C-402,MD Marg, Chembur (E)','400095');
+insert into Property Values('1840/2003/SRO2','PL4428048445','707976695869','620 sqft','Mumbai','Maharashtra','C-407,HP Marg, Bhandup (E)','400099');
+insert into Property Values('2941/2011/SRO3','PL5280468445','688924056676','620 sqft','Mumbai','Maharashtra','A-102,RC Marg, Mumbra (E)','400013');
+insert into Property Values('3941/2010/SRO5','PL7280268447','563013996155','420 sqft','Mumbai','Maharashtra','B-203,CK Marg, Ghatkopar (E))','400094');
 
 -- insert into property Values('1394/2015/SRO1','PL1238048425','935078894568','550 sqft','A-204,BK Marg, Kanjur Marg (E)',40092);
 -- insert into property Values('2414/2019/SRO3','PL3928048425','419510692642','750 sqft','C-402,MD Marg, Chembur (E)',40095);
