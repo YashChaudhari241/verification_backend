@@ -1,8 +1,13 @@
 from models import Listings, PropertyOwnership, AadharConnect, AadharUser
 from typing import TYPE_CHECKING
 from schemas import AutoCompleteQuery, SearchQuery
+import PIL
 import json
+import os
+# from main import accepted_content
 from query_builder import build_query
+from fastapi.exceptions import HTTPException
+from fastapi.responses import FileResponse
 from sqlalchemy import select, delete
 # import csv
 f = open('cities.json')
@@ -18,25 +23,20 @@ async def get_properties(wallet_address: str, db: "Session"):
     result2 = db.query(PropertyOwnership).join(
         AadharConnect, PropertyOwnership.UID == AadharConnect.UID
     ).filter(AadharConnect.wallet_address == wallet_address).all()
-    print(result2)
     return result2
 
 
 async def get_listings(wallet_address: str, db: "Session"):
     stmt = select(Listings, PropertyOwnership).select_from(PropertyOwnership).join(Listings).join(
         AadharConnect, AadharConnect.UID == PropertyOwnership.UID).where(AadharConnect.wallet_address == wallet_address)
-    print(stmt)
     listing = db.scalars(stmt).all()
-    print(listing)
     return listing
 
 
 async def unlist_property(wallet_address: str, property_id: str, db: "Session"):
     stmt = select(Listings).select_from(PropertyOwnership).join(Listings).join(AadharConnect, AadharConnect.UID ==
                                                                                PropertyOwnership.UID).where(AadharConnect.wallet_address == wallet_address).where(Listings.property_id == property_id)
-    print(stmt)
     listing = db.scalars(stmt).first()
-    print(listing)
     if listing is not None:
         db.delete(listing)
         db.commit()
@@ -86,3 +86,12 @@ async def get_listing(metadata: str, db):
         PropertyOwnership).where(Listings.metadata_id == metadata)
     listing = db.execute(stmt).fetchone()
     return listing
+
+async def get_listing_thumbnail(metadata: str,compressed:bool):
+    if compressed: 
+        for file in os.listdir(f"files/{metadata}/"):
+            if file.startswith('c_'):
+                return FileResponse(f"files/{metadata}/{file}")
+        raise HTTPException(409, detail="No thumbnail found to return")
+
+
