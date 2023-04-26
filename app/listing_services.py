@@ -50,7 +50,7 @@ async def update_listing_index(wallet_address: str, property_id: str, index: int
         PropertyOwnership, Listings.property_id == PropertyOwnership.SaleDeedNumber
     ).join(
         AadharConnect, PropertyOwnership.UID == AadharConnect.UID
-    ).filter(AadharConnect.wallet_address == wallet_address, Listings.metadata_id == property_id).one_or_none()
+    ).filter(AadharConnect.wallet_address == wallet_address, Listings.property_id == property_id).one_or_none()
     if (result):
         result.listing_index = index
         db.commit()

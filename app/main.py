@@ -4,8 +4,8 @@ import fastapi as _fastapi
 import sqlalchemy.orm as _orm
 import models as _models
 from fastapi.middleware.cors import CORSMiddleware
-from PIL import Image
 import PIL
+from PIL import Image
 from io import BytesIO
 import schemas as _schemas
 import services as _services
