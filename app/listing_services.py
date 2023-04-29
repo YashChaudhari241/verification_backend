@@ -93,5 +93,22 @@ async def get_listing_thumbnail(metadata: str,compressed:bool):
             if file.startswith('c_'):
                 return FileResponse(f"files/{metadata}/{file}")
         raise HTTPException(409, detail="No thumbnail found to return")
+async def get_total_images(metadata: str):
+    count=0;
+    for file in os.listdir(f"files/{metadata}/"):
+            if (file[0].isdigit()and file.endswith(('jpg', 'jpeg'))):
+                count=count+1;
+    return count
+
+async def get_listing_images(metadata: str,id: int):
+        
+        for file in os.listdir(f"files/{metadata}/"):
+            if (file.startswith(str(id)) and file.endswith(('jpg', 'jpeg'))):
+                return FileResponse(f"files/{metadata}/{file}")
+        #         imglist=[]
+        #         imglist.append((f"files/{metadata}/{file}"))           
+        # for i in imglist:
+        #     return FileResponse(i)
+        raise HTTPException(409, detail="No thumbnail found to return")
 
 
