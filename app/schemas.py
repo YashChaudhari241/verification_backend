@@ -172,6 +172,7 @@ class SearchQuery(_pydantic.BaseModel):
     rent_min: Optional[float]
     dep_max: Optional[float]
     dep_min: Optional[float]
+    bhk_min: Optional[float]
     hasParking: Optional[bool]
     hasCameras: Optional[bool]
     hasGym: Optional[bool]
