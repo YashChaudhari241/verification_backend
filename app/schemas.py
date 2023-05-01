@@ -1,7 +1,7 @@
 
 import datetime as _dt
 import pydantic as _pydantic
-from typing import Optional
+from typing import Optional, List
 
 
 class _BaseProperty(_pydantic.BaseModel):
@@ -159,6 +159,10 @@ class JustWallet(_pydantic.BaseModel):
 
 class AutoCompleteQuery(_pydantic.BaseModel):
     searchQuery: str
+
+
+class ListingQuery(_pydantic.BaseModel):
+    listingIndices: List[int]
 
 
 class SearchQuery(_pydantic.BaseModel):

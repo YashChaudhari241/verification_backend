@@ -105,8 +105,8 @@ async def create_listing(uploaded_files: List[_fastapi.UploadFile],
                          property_id: str = _fastapi.Form(), details: str = _fastapi.Form(),
                          longitude: str = _fastapi.Form(), latitude: str = _fastapi.Form(),
                          bhk: str = _fastapi.Form(), bathrooms: int = _fastapi.Form(),
-                         property_type: str = _fastapi.Form(), mntn: str=_fastapi.Form(),
-                         floor: int = _fastapi.Form(),total_floors: int = _fastapi.Form(),
+                         property_type: str = _fastapi.Form(), mntn: str = _fastapi.Form(),
+                         floor: int = _fastapi.Form(), total_floors: int = _fastapi.Form(),
                          age: int = _fastapi.Form(), poss_date: str = _fastapi.Form(),
                          pref_tenant: str = _fastapi.Form(),
                          furnish_status: str = _fastapi.Form(), hasGym: str = _fastapi.Form(),
@@ -146,9 +146,9 @@ async def create_listing(uploaded_files: List[_fastapi.UploadFile],
     return await _services.create_listing(new_listing=_models.Listings(property_id=property_id,
                                                                        deposit=float(deposit), eth_rent=float(eth_rent), metadata_id=unique_str, details=details,
                                                                        longitude=float(longitude), latitude=float(latitude), bhk=int(bhk), bathrooms=int(bathrooms), furnish_status=int(furnish_status),
-                                                                       property_type=int(property_type),mntn=int(mntn),
-                                                                       floor=int(floor),total_floors=int(total_floors),
-                                                                       age=int(age),poss_date=poss_date,pref_tenant=int(pref_tenant),
+                                                                       property_type=int(property_type), mntn=int(mntn),
+                                                                       floor=int(floor), total_floors=int(total_floors),
+                                                                       age=int(age), poss_date=poss_date, pref_tenant=int(pref_tenant),
                                                                        hasGym=hasGym == "true", isPetFriendly=isPetFriendly == "true", hasPark=hasPark == "true", hasParking=hasParking == "true", hasPool=hasPool == "true", hasBalcony=hasBalcony == "true",
                                                                        hasCameras=hasCameras == "true", isSmartHome=isSmartHome == "true"), db=db)
 
@@ -189,6 +189,11 @@ async def autocomplete(data: _schemas.AutoCompleteQuery):
 @app.post('/api/search')
 async def autocomplete(data: _schemas.SearchQuery, db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _listing_services.search_listing(query=data, db=db)
+
+
+@app.post('/api/getlistings')
+async def getListings(data: _schemas.ListingQuery, db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _listing_services.get_given_listings(query=data, db=db)
 
 
 @app.get('/api/listing')
