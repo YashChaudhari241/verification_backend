@@ -5,7 +5,7 @@ from models import Listings, PropertyOwnership
 def build_query(base_stmt, query: SearchQuery, db):
     print(query.hasCameras)
     listing_attributes = ["bathrooms", "hasBalcony", "hasCameras",
-                          "furnish_status", "isSmartHome", "hasGym", "hasParking", "bhk", "hasPool"]
+                          "furnish_status", "isSmartHome", "hasGym", "hasParking", "bhk", "hasPool", "isPetFriendly"]
     property_attributes = ["City", "State"]
 
     for attribute in property_attributes:
