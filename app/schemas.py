@@ -140,7 +140,7 @@ class PropertyListing(_pydantic.BaseModel):
 
 class UnlistProp(_pydantic.BaseModel):
     wallet_address: str
-    property_id: str
+    metadata_id: str
 
 
 class UpdateListing(_pydantic.BaseModel):

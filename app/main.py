@@ -192,7 +192,7 @@ async def get_my_listings(address: _schemas.JustWallet, db: _orm.Session = _fast
 @app.post('/api/unlist')
 async def unlist(data: _schemas.UnlistProp,
                  db: _orm.Session = _fastapi.Depends(_services.get_db)):
-    return await _listing_services.unlist_property(wallet_address=data.wallet_address, property_id=data.property_id, db=db)
+    return await _listing_services.unlist_property(wallet_address=data.wallet_address, metadata_id=data.metadata_id, db=db)
 
 
 @app.post('/api/update_index')

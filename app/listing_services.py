@@ -34,9 +34,9 @@ async def get_listings(wallet_address: str, db: "Session"):
     return listing
 
 
-async def unlist_property(wallet_address: str, property_id: str, db: "Session"):
+async def unlist_property(wallet_address: str, metadata_id: str, db: "Session"):
     stmt = select(Listings).select_from(PropertyOwnership).join(Listings).join(AadharConnect, AadharConnect.UID ==
-                                                                               PropertyOwnership.UID).where(AadharConnect.wallet_address == wallet_address).where(Listings.property_id == property_id)
+                                                                               PropertyOwnership.UID).where(AadharConnect.wallet_address == wallet_address).where(Listings.metadata_id == metadata_id)
     listing = db.scalars(stmt).first()
     if listing is not None:
         listing.delisted = True
