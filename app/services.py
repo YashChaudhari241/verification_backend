@@ -65,7 +65,7 @@ def get_db():
 
 
 async def get_all_listings(db: "Session") -> List[_schemas.Listing]:
-    listings = db.query(Listings).all()
+    listings = db.query(Listings).filter(Listings.delisted == False).all()
     return list(map(_schemas.Listing.from_orm, listings))
 
 # async def create_user(
