@@ -162,7 +162,17 @@ class AutoCompleteQuery(_pydantic.BaseModel):
 
 
 class SearchQuery(_pydantic.BaseModel):
-    City: str
+    City: Optional[str]
     State: Optional[str]
+    rent_max: Optional[float]
+    rent_min: Optional[float]
+    dep_max: Optional[float]
+    dep_min: Optional[float]
     hasParking: Optional[bool]
     hasCameras: Optional[bool]
+    hasGym: Optional[bool]
+    hasPool: Optional[bool]
+    hasPark: Optional[bool]
+    hasBalcony: Optional[bool]
+    isPetFriendly: Optional[bool]
+    isSmartHome: Optional[bool]
