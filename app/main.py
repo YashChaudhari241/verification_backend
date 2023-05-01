@@ -216,9 +216,11 @@ async def autocomplete(data: _schemas.SearchQuery, db: _orm.Session = _fastapi.D
 async def getListings(data: _schemas.ListingQuery, db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _listing_services.get_given_listings(query=data, db=db)
 
+
 @app.put('/api/delist')
-async def delist(property_id: str = _fastapi.Form(),db: _orm.Session = _fastapi.Depends(_services.get_db)):
-    return await _listing_services.delist(property_id=property_id, db=db)
+async def delist(metadata_id: str = _fastapi.Form(), db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _listing_services.delist(metadata_id=metadata_id, db=db)
+
 
 @app.get('/api/listing')
 async def getListing(metadata: str, db: _orm.Session = _fastapi.Depends(_services.get_db)):

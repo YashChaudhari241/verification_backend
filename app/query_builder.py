@@ -5,7 +5,7 @@ from models import Listings, PropertyOwnership
 def build_query(base_stmt, query: SearchQuery, db):
     print(query.hasCameras)
     listing_attributes = ["bathrooms", "hasBalcony", "hasCameras",
-                          "furnish_status", "isSmartHome", "hasGym", "hasParking", "bhk", "hasPool", "isPetFriendly","hasPark"]
+                          "furnish_status", "isSmartHome", "hasGym", "hasParking", "bhk", "hasPool", "isPetFriendly", "hasPark"]
     property_attributes = ["City", "State"]
 
     for attribute in property_attributes:
@@ -18,9 +18,9 @@ def build_query(base_stmt, query: SearchQuery, db):
             base_stmt = base_stmt.where(
                 getattr(Listings, attribute) == getattr(query, attribute))
 
-    print("Q",query.dict())
-    bhk_min = query.dict().get("bhk_min", 0)
-    print("BHK",bhk_min)
+    print("Q", query.dict())
+    bhk_min = query.dict()["bhk_min"] if query.dict()[
+        "bhk_min"] is not None else 0
     rent_max = query.dict()["rent_max"] if query.dict()[
         "rent_max"] is not None else 500
     rent_min = query.dict()["rent_min"] if query.dict()[
@@ -30,7 +30,7 @@ def build_query(base_stmt, query: SearchQuery, db):
     dep_min = query.dict()["dep_min"] if query.dict()[
         "dep_min"] is not None else 0
     base_stmt = base_stmt.where(Listings.eth_rent <= rent_max, Listings.eth_rent >=
-                                rent_min, Listings.deposit >= dep_min, Listings.deposit <= dep_max, Listings.bhk>=bhk_min).where(Listings.delisted == False)
+                                rent_min, Listings.deposit >= dep_min, Listings.deposit <= dep_max, Listings.bhk >= bhk_min).where(Listings.delisted == False)
     listings = db.execute(base_stmt)
     # result = [row._mapping for row in listings]
     result = []

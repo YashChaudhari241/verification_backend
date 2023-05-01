@@ -88,13 +88,15 @@ async def get_listing(metadata: str, db):
     listing = db.execute(stmt).fetchone()
     return listing
 
-async def delist(property_id:str,db):
+
+async def delist(metadata_id: str, db):
     stmt = update(Listings).\
-        where(Listings.property_id == property_id).\
+        where(Listings.metadata_id == metadata_id).\
         values(delisted=True)
     db.execute(stmt)
     db.commit()
-    return {"message": f"Details for listing {property_id} updated successfully."}
+    return {"message": f"Details for listing {metadata_id} updated successfully."}
+
 
 async def get_given_listings(query: ListingQuery, db):
     stmt = select(Listings, PropertyOwnership).join(
@@ -133,4 +135,3 @@ async def get_listing_images(metadata: str, id: int):
     # for i in imglist:
     #     return FileResponse(i)
     raise HTTPException(409, detail="No thumbnail found to return")
-
