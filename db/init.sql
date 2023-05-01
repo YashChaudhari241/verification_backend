@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS property(
 "Pincode" VARCHAR(10)
 );
 insert into Property Values('1394/2015/SRO1','PL1238048425','935078894568','550 sqft','Mumbai','Maharashtra','A-204,BK Marg, Kanjur Marg (E)','400092');
+insert into Property Values('1394/2015/SRO4','PL1238448425','935078894568','1050 sqft','Mumbai','Maharashtra','B-303,BK Marg, Thane (E)','400604');
 insert into Property Values('1395/2015/SRO3','PL1238042425','935078894568','450 sqft','Ahmedabad','Gujarat','A-205 ATV Road, Ahmedabad ','300032');
 insert into Property Values('2414/2019/SRO3','PL3928048425','419510692642','750 sqft','Mumbai','Maharashtra','C-402,MD Marg, Chembur (E)','400095');
 insert into Property Values('1840/2003/SRO2','PL4428048445','707976695869','620 sqft','Mumbai','Maharashtra','C-407,HP Marg, Bhandup (E)','400099');
@@ -82,11 +83,12 @@ CREATE TABLE IF NOT EXISTS wallet_nonce(
 );
 
 CREATE TABLE IF NOT EXISTS listings(
-    "property_id" VARCHAR(16) PRIMARY KEY REFERENCES PROPERTY("SaleDeedNumber"), 
+    "property_id" VARCHAR(16)  REFERENCES PROPERTY("SaleDeedNumber"), 
     "deposit" DECIMAL(22,18),   
     "eth_rent" DECIMAL(22,18),
-    "metadata_id"  VARCHAR(8) UNIQUE,
+    "metadata_id"  VARCHAR(8) PRIMARY KEY,
     "latitude" NUMERIC,
+    "delisted" BOOLEAN,
     "longitude" NUMERIC,
     "bhk" DECIMAL(3,1),
     "details" VARCHAR(256),
