@@ -19,6 +19,7 @@ import os
 app = _fastapi.FastAPI()
 accepted_content = ["image/png", "image/jpeg", "image/gif",
                     "video/mp4", "video/x-msvideo", "video/webm"]
+accepted_files=["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
 origins = [
     "*"
 ]
@@ -152,6 +153,21 @@ async def create_listing(uploaded_files: List[_fastapi.UploadFile],
                                                                        hasGym=hasGym == "true", isPetFriendly=isPetFriendly == "true", hasPark=hasPark == "true", hasParking=hasParking == "true", hasPool=hasPool == "true", hasBalcony=hasBalcony == "true",
                                                                        hasCameras=hasCameras == "true", isSmartHome=isSmartHome == "true"), db=db)
 
+
+@app.post('/api/upload_agreement')
+async def upload_agreement(uploaded_files: List[_fastapi.UploadFile],metadata_id: str = _fastapi.Form()):
+    i = 0
+    ext=""
+    for file in uploaded_files:
+        if (file.content_type not in accepted_files):
+            raise  _fastapi.HTTPException(status_code=400, detail="Invalid file type. Only DOC, DOCX, and PDF files are allowed.")
+        i = i + 1
+        split_tup = os.path.splitext(file.filename)
+        ext=split_tup[1]
+        async with aiofiles.open(f"files/{metadata_id}/agreementFile{ext}", 'wb') as out_file:
+                while content := await file.read(1024):  # async read chunk
+                    await out_file.write(content)
+    return {"filename": file.filename}
 
 @app.post('/api/disconnect_aadhar')
 async def disconnect(address: _schemas.JustWallet,
