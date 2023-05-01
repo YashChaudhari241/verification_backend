@@ -216,9 +216,11 @@ async def getListing(metadata: str, db: _orm.Session = _fastapi.Depends(_service
 async def getThumbnail(metadata, compressed: bool):
     return await _listing_services.get_listing_thumbnail(metadata=metadata, compressed=compressed)
 
+
 @app.get("/api/images/{metadata}")
-async def getImages(metadata,id:int):
+async def getImages(metadata, id: int):
     return await _listing_services.get_listing_images(metadata=metadata, id=id)
+
 
 @app.get("/api/totalimages/{metadata}")
 async def getTotalImages(metadata):

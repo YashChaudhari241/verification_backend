@@ -18,11 +18,15 @@ def build_query(base_stmt, query: SearchQuery, db):
             base_stmt = base_stmt.where(
                 getattr(Listings, attribute) == getattr(query, attribute))
 
-    print(base_stmt)
-    rent_max = query.rent_max if "rent_max" in query else 500
-    rent_min = query.rent_min if "rent_min" in query else 0
-    dep_max = query.dep_max if "dep_max" in query else 500
-    dep_min = query.dep_min if "dep_min" in query else 0
+    print(query.dict())
+    rent_max = query.dict()["rent_max"] if query.dict()[
+        "rent_max"] is not None else 500
+    rent_min = query.dict()["rent_min"] if query.dict()[
+        "rent_min"] is not None else 0
+    dep_max = query.dict()["dep_max"] if query.dict()[
+        "dep_max"] is not None else 500
+    dep_min = query.dict()["dep_min"] if query.dict()[
+        "dep_min"] is not None else 0
     base_stmt = base_stmt.where(Listings.eth_rent <= rent_max, Listings.eth_rent >=
                                 rent_min, Listings.deposit >= dep_min, Listings.deposit <= dep_max)
     listings = db.execute(base_stmt)
