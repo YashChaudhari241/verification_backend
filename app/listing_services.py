@@ -29,7 +29,7 @@ async def get_properties(wallet_address: str, db: "Session"):
 
 async def get_listings(wallet_address: str, db: "Session"):
     stmt = select(Listings, PropertyOwnership).select_from(PropertyOwnership).join(Listings).join(
-        AadharConnect, AadharConnect.UID == PropertyOwnership.UID).where(AadharConnect.wallet_address == wallet_address)
+        AadharConnect, AadharConnect.UID == PropertyOwnership.UID).where(AadharConnect.wallet_address == wallet_address).where(Listings.delisted == False)
     listing = db.scalars(stmt).all()
     return listing
 
@@ -39,7 +39,7 @@ async def unlist_property(wallet_address: str, property_id: str, db: "Session"):
                                                                                PropertyOwnership.UID).where(AadharConnect.wallet_address == wallet_address).where(Listings.property_id == property_id)
     listing = db.scalars(stmt).first()
     if listing is not None:
-        db.delete(listing)
+        listing.delisted = True
         db.commit()
         return {"found": True}
     else:
@@ -51,7 +51,7 @@ async def update_listing_index(wallet_address: str, property_id: str, index: int
         PropertyOwnership, Listings.property_id == PropertyOwnership.SaleDeedNumber
     ).join(
         AadharConnect, PropertyOwnership.UID == AadharConnect.UID
-    ).filter(AadharConnect.wallet_address == wallet_address, Listings.property_id == property_id).one_or_none()
+    ).filter(AadharConnect.wallet_address == wallet_address, Listings.metadata_id == property_id).one_or_none()
     if (result):
         result.listing_index = index
         db.commit()

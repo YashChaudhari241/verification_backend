@@ -28,7 +28,7 @@ def build_query(base_stmt, query: SearchQuery, db):
     dep_min = query.dict()["dep_min"] if query.dict()[
         "dep_min"] is not None else 0
     base_stmt = base_stmt.where(Listings.eth_rent <= rent_max, Listings.eth_rent >=
-                                rent_min, Listings.deposit >= dep_min, Listings.deposit <= dep_max)
+                                rent_min, Listings.deposit >= dep_min, Listings.deposit <= dep_max).where(Listings.delisted == False)
     listings = db.execute(base_stmt)
     # result = [row._mapping for row in listings]
     result = []
